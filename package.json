@@ -1,0 +1,17 @@
+{
+  "name": "nsoauth1",
+  "version": "1.0.0",
+  "description": "Generate your NetSuite Token Based Authorization Header",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["netsuite", "tba", "oauth", "restlet"],
+  "author": "Alejandro Fierro",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alejandrofierro/nsoauth1.git"
+  },
+  "homepage": "https://github.com/alejandrofierro/nsoauth1#readme"
+}
