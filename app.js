@@ -18,7 +18,7 @@ module.exports = NSOAuth1;
  * @constructor
  */
 
-function NSOAuth1({ method, url, ck, cs, tk, ts, realm}){
+function NSOAuth1({ method, url, ck, cs, tk, ts, realm, timestamp, nonce}){
     try {                
         
         if(!method) throw new Error('Invalid Method, only allowed GET, PUT, POST, DELETE')
@@ -33,6 +33,8 @@ function NSOAuth1({ method, url, ck, cs, tk, ts, realm}){
         this.tk = tk;
         this.ts = ts;
         this.realm = realm;
+        this.timestamp = timestamp;
+        this.nonce = nonce;
                   
     } catch (error) {
         throw error;
@@ -42,8 +44,8 @@ function NSOAuth1({ method, url, ck, cs, tk, ts, realm}){
 
 NSOAuth1.prototype.generateOAuth = function() {
     try {
-        let timestamp = generateTimeStamp();
-        let nonce = generateNonce();
+        let timestamp = this.timestamp ? this.timestamp : generateTimeStamp();
+        let nonce = this.nonce ? this.nonce : generateNonce();
         let baseString = getBaseString({
             method: this.method,
             url: this.url,
@@ -85,7 +87,7 @@ function getBaseString(_data) {
     const { method: httpMethod, url, oauth_data } = _data;
 
     let baseUrl = url.split('?')[0];
-    let querystring = url.split('?')[1];
+    let querystring = url.indexOf('?') >= 0 ? url.split('?')[1]: '';
     let params = querystring.split('&');
 
     //Get Query Parameters
@@ -96,6 +98,8 @@ function getBaseString(_data) {
         let _v = _d[1];
         _p[_k] = _v
     }
+    console.log(_p)
+
     let data = { ..._p };
     data['oauth_consumer_key'] = oauth_data.consumerKey;
     data['oauth_nonce'] = oauth_data.nonce;
@@ -109,7 +113,8 @@ function getBaseString(_data) {
         _a.push(key)
     }
     let _sorted = _a.sort()    //Sort Properties Ascending , requirement from https://tools.ietf.org/html/rfc5849#section-3.4.1
-    
+    console.log(_sorted)
+
     //Create BaseString
     let baseString = httpMethod + '&';    
     baseString += encode(baseUrl) + "&"
