@@ -55,7 +55,8 @@ NSOAuth1.prototype.generateOAuth = function() {
                 tokenKey: this.tk,
                 timestamp: timestamp,
                 nonce: nonce
-            }
+            },
+            debug_mode: this.debug_mode
         });
         
         let key = encode(this.cs) + '&' + encode(this.ts);
@@ -85,7 +86,7 @@ NSOAuth1.prototype.generateOAuth = function() {
 }
 
 function getBaseString(_data) {
-    const { method: httpMethod, url, oauth_data } = _data;
+    const { method: httpMethod, url, oauth_data, debug_mode } = _data;
 
     let baseUrl = url.split('?')[0];
     let querystring = url.indexOf('?') >= 0 ? url.split('?')[1]: '';
@@ -100,7 +101,7 @@ function getBaseString(_data) {
         _p[_k] = _v
     }
 
-    if(this.debug_mode)
+    if(debug_mode)
         console.log(_p)
 
     let data = { ..._p };
@@ -117,7 +118,7 @@ function getBaseString(_data) {
     }
     let _sorted = _a.sort()    //Sort Properties Ascending , requirement from https://tools.ietf.org/html/rfc5849#section-3.4.1
     
-    if(this.debug_mode)
+    if(debug_mode)
         console.log(_sorted)
 
     //Create BaseString
