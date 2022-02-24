@@ -18,7 +18,7 @@ module.exports = NSOAuth1;
  * @constructor
  */
 
-function NSOAuth1({ method, url, ck, cs, tk, ts, realm, timestamp, nonce}){
+function NSOAuth1({ method, url, ck, cs, tk, ts, realm, timestamp, nonce, debug_mode = false}){
     try {                
         
         if(!method) throw new Error('Invalid Method, only allowed GET, PUT, POST, DELETE')
@@ -35,6 +35,7 @@ function NSOAuth1({ method, url, ck, cs, tk, ts, realm, timestamp, nonce}){
         this.realm = realm;
         this.timestamp = timestamp;
         this.nonce = nonce;
+        this.debug_mode = debug_mode
                   
     } catch (error) {
         throw error;
@@ -98,7 +99,9 @@ function getBaseString(_data) {
         let _v = _d[1];
         _p[_k] = _v
     }
-    console.log(_p)
+
+    if(this.debug_mode)
+        console.log(_p)
 
     let data = { ..._p };
     data['oauth_consumer_key'] = oauth_data.consumerKey;
@@ -113,7 +116,9 @@ function getBaseString(_data) {
         _a.push(key)
     }
     let _sorted = _a.sort()    //Sort Properties Ascending , requirement from https://tools.ietf.org/html/rfc5849#section-3.4.1
-    console.log(_sorted)
+    
+    if(this.debug_mode)
+        console.log(_sorted)
 
     //Create BaseString
     let baseString = httpMethod + '&';    
@@ -138,6 +143,7 @@ function encode(str) {
         .replace(/\*/g, "%2A")
         .replace(/\'/g, "%27")
         .replace(/\(/g, "%28")
+        .replace(/:/gi, "%3A")
         .replace(/\)/g, "%29");
 }
 function generateNonce() {
