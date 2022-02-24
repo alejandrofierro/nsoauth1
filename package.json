@@ -1,6 +1,6 @@
 {
   "name": "nsoauth1",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Generate your NetSuite Token Based Authorization Header",
   "main": "app.js",
   "scripts": {
