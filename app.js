@@ -98,7 +98,7 @@ function getBaseString(_data) {
         let _d = params[i].split("=");
         let _k = _d[0];
         let _v = _d[1];
-        _p[_k] = _v
+        if(_k) _p[_k] = _v
     }
 
     if(debug_mode)
